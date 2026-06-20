@@ -428,6 +428,40 @@ card.style.display=text.includes(filter)?"block":"none";
 });
 
 });
+  async function loadUpdates() {
+
+const response = await fetch("updates.json");
+const updates = await response.json();
+
+const container = document.getElementById("cardsContainer");
+
+container.innerHTML = "";
+
+updates.slice().reverse().forEach(item => {
+
+container.innerHTML += `
+<div class="card">
+<span class="badge">NEW</span>
+
+<h3>${item.title}</h3>
+
+<p>${item.date}</p>
+
+<button onclick="showPopup(
+'${item.title}',
+'${item.details}<br><br><a href=&quot;${item.link}&quot; target=&quot;_blank&quot;>Open Link</a>'
+)">
+Read More
+</button>
+
+</div>
+`;
+
+});
+
+}
+
+loadUpdates();
 
 </script>
 
