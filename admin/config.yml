@@ -1,5 +1,7 @@
 backend:
   name: github
+  repo: mayurpiyish-code/rajshree-computer
+  branch: main
 
 media_folder: "images"
 public_folder: "/images"
