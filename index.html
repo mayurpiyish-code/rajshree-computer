@@ -402,62 +402,74 @@ Hall No. 01, Amet, Rajsamand - 313332
 <script>
 
 function showPopup(title,text){
-document.getElementById("popupTitle").innerHTML=title;
-document.getElementById("popupText").innerHTML=text;
-document.getElementById("popup").style.display="flex";
+document.getElementById("popupTitle").innerHTML = title;
+document.getElementById("popupText").innerHTML = text;
+document.getElementById("popup").style.display = "flex";
 }
 
 function closePopup(){
-document.getElementById("popup").style.display="none";
+document.getElementById("popup").style.display = "none";
 }
 
-const searchInput=document.getElementById("searchInput");
+const searchInput = document.getElementById("searchInput");
 
-searchInput.addEventListener("keyup",function(){
+searchInput.addEventListener("keyup", function(){
 
-let filter=this.value.toLowerCase();
+let filter = this.value.toLowerCase();
 
-let cards=document.querySelectorAll(".card");
+let cards = document.querySelectorAll(".card");
 
-cards.forEach(card=>{
+cards.forEach(card => {
 
-let text=card.innerText.toLowerCase();
+let text = card.innerText.toLowerCase();
 
-card.style.display=text.includes(filter)?"block":"none";
+card.style.display = text.includes(filter) ? "block" : "none";
+
+});
 
 });
 
-});
-  async function loadUpdates() {
+async function loadUpdates() {
 
-const response = await fetch("updates.json");
+try {
+
+const response = await fetch("updates.json?v=" + Date.now());
+
 const updates = await response.json();
 
 const container = document.getElementById("cardsContainer");
 
 container.innerHTML = "";
 
-updates.slice().reverse().forEach(item => {
+updates.forEach(item => {
 
-container.innerHTML += `
-<div class="card">
+const card = document.createElement("div");
+
+card.className = "card";
+
+card.innerHTML = `
 <span class="badge">NEW</span>
-
 <h3>${item.title}</h3>
-
 <p>${item.date}</p>
-
-<button onclick="showPopup(
-'${item.title}',
-'${item.details}<br><br><a href=&quot;${item.link}&quot; target=&quot;_blank&quot;>Open Link</a>'
-)">
-Read More
-</button>
-
-</div>
+<button>Read More</button>
 `;
 
+card.querySelector("button").addEventListener("click", () => {
+showPopup(item.title, item.details);
 });
+
+container.prepend(card);
+
+});
+
+} catch(error){
+
+console.error("JSON Error:", error);
+
+document.getElementById("cardsContainer").innerHTML =
+"<h3 style='color:red'>Error Loading Updates</h3>";
+
+}
 
 }
 
