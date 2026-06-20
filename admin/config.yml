@@ -1,0 +1,16 @@
+backend:
+  name: github
+
+media_folder: "images"
+public_folder: "/images"
+
+collections:
+  - name: "recruitment"
+    label: "Recruitment"
+    folder: "content/recruitment"
+    create: true
+
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Date", name: "date", widget: "datetime"}
+      - {label: "Details", name: "body", widget: "markdown"}
